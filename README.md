@@ -1,1 +1,2 @@
 # counter-app
+A counter app is a simple application that allows users to increase, decrease, or reset a numerical value with button clicks. It’s commonly used as a beginner project in programming to demonstrate concepts like state management, user interaction, and event handling.

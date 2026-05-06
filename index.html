@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Simple Counter | + / - / Reset</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      background: linear-gradient(145deg, #2b3b4e 0%, #1a2a3a 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Roboto', sans-serif;
+      padding: 1.5rem;
+    }
+
+    /* Main Card */
+    .counter-card {
+      max-width: 480px;
+      width: 100%;
+      background: #fefef7;
+      border-radius: 3rem;
+      box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,245,0.6);
+      padding: 2rem 1.5rem 2rem;
+      text-align: center;
+      transition: all 0.2s;
+      border: 1px solid #ffe1b3;
+    }
+
+    /* Title */
+    .title {
+      margin-bottom: 1.2rem;
+    }
+
+    .title h1 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #2c5c7a, #1f3e52);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title h1::before {
+      content: "🔢";
+      font-size: 1.9rem;
+      background: none;
+      -webkit-background-clip: unset;
+      color: #3c7a9e;
+    }
+
+    .sub {
+      font-size: 0.75rem;
+      color: #8b6f4c;
+      background: #f3efdf;
+      display: inline-block;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+      margin-top: 6px;
+    }
+
+    /* Number display */
+    .display-area {
+      background: #ffffff;
+      border-radius: 3rem;
+      margin: 1.5rem 0 1.8rem;
+      padding: 1rem;
+      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.02), 0 6px 12px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e9dbc9;
+    }
+
+    .counter-number {
+      font-size: 5.5rem;
+      font-weight: 800;
+      font-family: 'Segoe UI', 'Poppins', monospace;
+      background: linear-gradient(145deg, #1e4b6e, #0e2c3f);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+      letter-spacing: 4px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.1s ease;
+    }
+
+    /* Button Group */
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0 0.6rem;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 0.9rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 3rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #f0f0f0;
+      color: #2c3e2f;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-decrease {
+      background: #efb0a4;
+      color: #5e2a1c;
+      box-shadow: 0 4px 8px rgba(160, 60, 30, 0.2);
+    }
+
+    .btn-decrease:hover {
+      background: #e89787;
+    }
+
+    .btn-increase {
+      background: #a7d0b0;
+      color: #1c4d2d;
+      box-shadow: 0 4px 8px rgba(50, 100, 30, 0.2);
+    }
+
+    .btn-increase:hover {
+      background: #91c29c;
+    }
+
+    .btn-reset {
+      background: #f5e2b0;
+      color: #8b6220;
+      box-shadow: 0 4px 8px rgba(139, 98, 32, 0.15);
+    }
+
+    .btn-reset:hover {
+      background: #efd797;
+    }
+
+    /* subtle footer */
+    .footer-note {
+      margin-top: 1.8rem;
+      font-size: 0.7rem;
+      color: #ad916b;
+      background: #fff8ea;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+    }
+
+    /* responsive */
+    @media (max-width: 480px) {
+      .counter-card {
+        padding: 1.5rem;
+      }
+      .counter-number {
+        font-size: 4rem;
+      }
+      .btn {
+        min-width: 70px;
+        padding: 0.7rem 0;
+        font-size: 1rem;
+      }
+      .button-group {
+        gap: 0.7rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .counter-number {
+        font-size: 3.2rem;
+      }
+      .btn {
+        font-size: 0.9rem;
+        padding: 0.6rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="counter-card">
+  <div class="title">
+    <h1>Simple Counter</h1>
+    <div class="sub">increase · decrease · reset</div>
+  </div>
+
+  <div class="display-area">
+    <div class="counter-number" id="counterValue">0</div>
+  </div>
+
+  <div class="button-group">
+    <button class="btn btn-decrease" id="decreaseBtn" aria-label="Decrease">
+      <span>➖</span> Decrease
+    </button>
+    <button class="btn btn-reset" id="resetBtn" aria-label="Reset">
+      <span>⟳</span> Reset
+    </button>
+    <button class="btn btn-increase" id="increaseBtn" aria-label="Increase">
+      <span>➕</span> Increase
+    </button>
+  </div>
+  <div class="footer-note">
+    🔄 click any button — counter updates instantly
+  </div>
+</div>
+
+<script>
+  // Get DOM elements
+  const counterDisplay = document.getElementById('counterValue');
+  const decreaseBtn = document.getElementById('decreaseBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const increaseBtn = document.getElementById('increaseBtn');
+
+  // Initial counter state
+  let count = 0;
+
+  // Function to update the UI
+  function updateCounterUI() {
+    counterDisplay.textContent = count;
+    // optional: add a small bounce style (pure visual)
+    counterDisplay.style.transform = 'scale(1.05)';
+    setTimeout(() => {
+      if (counterDisplay) counterDisplay.style.transform = '';
+    }, 100);
+  }
+
+  // Increase logic
+  function increaseCounter() {
+    count++;
+    updateCounterUI();
+  }
+
+  // Decrease logic (can go negative, simple counter)
+  function decreaseCounter() {
+    count--;
+    updateCounterUI();
+  }
+
+  // Reset logic
+  function resetCounter() {
+    count = 0;
+    updateCounterUI();
+  }
+
+  // Attach event listeners
+  increaseBtn.addEventListener('click', increaseCounter);
+  decreaseBtn.addEventListener('click', decreaseCounter);
+  resetBtn.addEventListener('click', resetCounter);
+
+  // Optional: keyboard support (arrow up/down, r for reset)
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      increaseCounter();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      decreaseCounter();
+    } else if (e.key === 'r' || e.key === 'R') {
+      e.preventDefault();
+      resetCounter();
+    }
+  });
+
+  // Initialize display
+  updateCounterUI();
+</script>
+</body>
+</html>
